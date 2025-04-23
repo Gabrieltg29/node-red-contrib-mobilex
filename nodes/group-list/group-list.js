@@ -21,17 +21,15 @@ module.exports = function (RED) {
 
         const temTab = flow.get("tab");
         const page = flow.get("page");
+        const index = msg.index_content;
 
         if (temTab) {
-          page.pageContent.contentList.push({
-            groupList: templateData,
-          });
+          page.pageContent.contentList[index].groupList = [templateData];
+          msg.index = page.pageContent.contentList[index].groupList.length - 1;
         } else {
-          page.pageContent = {
-            groupList: templateData,
-          };
+          page.pageContent.groupList = [templateData];
+          msg.index = page.pageContent.groupList.length - 1;
         }
-        console.log(`pega o page ${JSON.stringify(flow.get("page"))}`);
         msg.topic = "groupList";
         msg.expectNumberCountsOutput = node.wires[0].length;
         node.send(msg);
